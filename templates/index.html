@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body class="container py-5">
+    <h2 class="text-center mb-4">Crop Prediction</h2>
+    <form id="crop-form" class="mx-auto" style="max-width: 300px;">
+        <div class="form-group">
+            <label for="N">Nitrogen (N):</label>
+            <input type="number" id="N" name="N" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="P">Phosphorus (P):</label>
+            <input type="number" id="P" name="P" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="K">Potassium (K):</label>
+            <input type="number" id="K" name="K" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="humidity">Humidity:</label>
+            <input type="number" id="humidity" name="humidity" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="rainfall">Rainfall:</label>
+            <input type="number" id="rainfall" name="rainfall" class="form-control" required>
+        </div>
+
+        <button type="button" onclick="predictCrop()" class="btn btn-primary btn-block">Predict Crop</button>
+    </form>
+
+    <div id="result" class="mt-4 text-center"></div>
+
+    <script>
+        function predictCrop() {
+            var form = document.getElementById("crop-form");
+            var formData = new FormData(form);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = "Predicted Crop: " + data.predicted_crop;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
