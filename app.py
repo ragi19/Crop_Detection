@@ -22,7 +22,7 @@ default_app = firebase_admin.initialize_app(cred_obj, {
 })
 
 # Get a reference to the database service
-ref = db.reference('/preds')
+ref = db.reference('/data/predictions')
 
 # Dictionary mapping label encoded numbers to label text
 label_encoded_to_text = {
@@ -54,9 +54,9 @@ def predict_crop():
     data = request.get_json()
 
     # Extract required features from input data
-    features = ['N', 'P', 'K', 'humidity', 'rainfall']
+    features = ['N', 'P', 'K', 'moisture', 'rainfall']
     input_features = [data[feature] for feature in features]
-
+    
     # Make predictions using the loaded model
     predictions = loaded_model.predict([input_features])
 
